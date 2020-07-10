@@ -5,15 +5,15 @@ const bitcoin = require('bitcoin');
 let Regex = require('regex'),
   config = require('config'),
   spamchannels = config.get('moderation').botspamchannels;
-let walletConfig = config.get('rvn').config;
-let paytxfee = config.get('rvn').paytxfee;
-const rvn = new bitcoin.Client(walletConfig);
+let walletConfig = config.get('stone').config;
+let paytxfee = config.get('stone').paytxfee;
+const stone = new bitcoin.Client(walletConfig);
 
-exports.commands = ['tiprvn'];
-exports.tiprvn = {
+exports.commands = ['tipstone'];
+exports.tipstone = {
   usage: '<subcommand>',
   description:
-    '__**Ravencoin (RVN) Tipper**__\nTransaction Fees: **' + paytxfee + '**\n    **!tiprvn** : Displays This Message\n    **!tiprvn balance** : get your balance\n    **!tiprvn deposit** : get address for your deposits\n    **!tiprvn withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n    **!tiprvn <@user> <amount>** :mention a user with @ and then the amount to tip them\n    **!tiprvn private <user> <amount>** : put private before Mentioning a user to tip them privately.\n\n    has a default txfee of ' + paytxfee,
+    '__**Stonecoin (STONE) Tipper**__\nTransaction Fees: **' + paytxfee + '**\n    **!tipstone** : Displays This Message\n    **!tipstone balance** : get your balance\n    **!tipstone deposit** : get address for your deposits\n    **!tipstone withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n    **!tipstone <@user> <amount>** :mention a user with @ and then the amount to tip them\n    **!tipstone private <user> <amount>** : put private before Mentioning a user to tip them privately.\n\n    has a default txfee of ' + paytxfee,
   process: async function(bot, msg, suffix) {
     let tipper = msg.author.id.replace('!', ''),
       words = msg.content
@@ -24,7 +24,7 @@ exports.tiprvn = {
         }),
       subcommand = words.length >= 2 ? words[1] : 'help',
       helpmsg =
-        '__**Ravencoin (RVN) Tipper**__\nTransaction Fees: **' + paytxfee + '**\n    **!tiprvn** : Displays This Message\n    **!tiprvn balance** : get your balance\n    **!tiprvn deposit** : get address for your deposits\n    **!tiprvn withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n    **!tiprvn <@user> <amount>** :mention a user with @ and then the amount to tip them\n    **!tiprvn private <user> <amount>** : put private before Mentioning a user to tip them privately.\n\n    **<> : Replace with appropriate value.**',
+        '__**Stonecoin (STONE) Tipper**__\nTransaction Fees: **' + paytxfee + '**\n    **!tipstone** : Displays This Message\n    **!tipstone balance** : get your balance\n    **!tipstone deposit** : get address for your deposits\n    **!tipstone withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n    **!tipstone <@user> <amount>** :mention a user with @ and then the amount to tip them\n    **!tipstone private <user> <amount>** : put private before Mentioning a user to tip them privately.\n\n    **<> : Replace with appropriate value.**',
       channelwarning = 'Please use <#bot-spam> or DMs to talk to bots.';
     switch (subcommand) {
       case 'help':
@@ -58,12 +58,12 @@ function doHelp(message, helpmsg) {
 }
 
 function doBalance(message, tipper) {
-  rvn.getBalance(tipper, 1, function(err, balance) {
+  stone.getBalance(tipper, 1, function(err, balance) {
     if (err) {
-      message.reply('Error getting Ravencoin (RVN) balance.').then(message => message.delete(10000));
+      message.reply('Error getting Stonecoin (STONE) balance.').then(message => message.delete(10000));
     } else {
     message.channel.send({ embed: {
-    description: '**:bank::money_with_wings::moneybag:Ravencoin (RVN) Balance!:moneybag::money_with_wings::bank:**',
+    description: '**:bank::money_with_wings::moneybag:Stonecoin (STONE) Balance!:moneybag::money_with_wings::bank:**',
     color: 1363892,
     fields: [
       {
@@ -85,10 +85,10 @@ function doBalance(message, tipper) {
 function doDeposit(message, tipper) {
   getAddress(tipper, function(err, address) {
     if (err) {
-      message.reply('Error getting your Ravencoin (RVN) deposit address.').then(message => message.delete(10000));
+      message.reply('Error getting your Stonecoin (STONE) deposit address.').then(message => message.delete(10000));
     } else {
     message.channel.send({ embed: {
-    description: '**:bank::card_index::moneybag:Ravencoin (RVN) Address!:moneybag::card_index::bank:**',
+    description: '**:bank::card_index::moneybag:Stonecoin (STONE) Address!:moneybag::card_index::bank:**',
     color: 1363892,
     fields: [
       {
@@ -117,24 +117,24 @@ function doWithdraw(message, tipper, words, helpmsg) {
     amount = getValidatedAmount(words[3]);
 
   if (amount === null) {
-    message.reply("I don't know how to withdraw that much Ravencoin (RVN)...").then(message => message.delete(10000));
+    message.reply("I don't know how to withdraw that much Stonecoin (STONE)...").then(message => message.delete(10000));
     return;
   }
 
-  rvn.getBalance(tipper, 1, function(err, balance) {
+  stone.getBalance(tipper, 1, function(err, balance) {
     if (err) {
-      message.reply('Error getting Ravencoin (RVN) balance.').then(message => message.delete(10000));
+      message.reply('Error getting Stonecoin (STONE) balance.').then(message => message.delete(10000));
     } else {
       if (Number(amount) + Number(paytxfee) > Number(balance)) {
-        message.channel.send('Please leave atleast ' + paytxfee + ' Ravencoin (RVN) for transaction fees!');
+        message.channel.send('Please leave atleast ' + paytxfee + ' Stonecoin (STONE) for transaction fees!');
         return;
       }
-      rvn.sendFrom(tipper, address, Number(amount), function(err, txId) {
+      stone.sendFrom(tipper, address, Number(amount), function(err, txId) {
         if (err) {
           message.reply(err.message).then(message => message.delete(10000));
         } else {
         message.channel.send({embed:{
-        description: '**:outbox_tray::money_with_wings::moneybag:Ravencoin (RVN) Transaction Completed!:moneybag::money_with_wings::outbox_tray:**',
+        description: '**:outbox_tray::money_with_wings::moneybag:Stonecoin (STONE) Transaction Completed!:moneybag::money_with_wings::outbox_tray:**',
         color: 1363892,
         fields: [
           {
@@ -185,16 +185,16 @@ function doTip(bot, message, tipper, words, helpmsg) {
   let amount = getValidatedAmount(words[amountOffset]);
 
   if (amount === null) {
-    message.reply("I don't know how to tip that much Ravencoin (RVN)...").then(message => message.delete(10000));
+    message.reply("I don't know how to tip that much Stonecoin (STONE)...").then(message => message.delete(10000));
     return;
   }
 
-  rvn.getBalance(tipper, 1, function(err, balance) {
+  stone.getBalance(tipper, 1, function(err, balance) {
     if (err) {
-      message.reply('Error getting Ravencoin (RVN) balance.').then(message => message.delete(10000));
+      message.reply('Error getting Stonecoin (STONE) balance.').then(message => message.delete(10000));
     } else {
       if (Number(amount) + Number(paytxfee) > Number(balance)) {
-        message.channel.send('Please leave atleast ' + paytxfee + ' Ravencoin (RVN) for transaction fees!');
+        message.channel.send('Please leave atleast ' + paytxfee + ' Stonecoin (STONE) for transaction fees!');
         return;
       }
 
@@ -205,7 +205,7 @@ function doTip(bot, message, tipper, words, helpmsg) {
             return;
           }
       if (message.mentions.users.first().id) {
-        sendRVN(bot, message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
+        sendSTONE(bot, message, tipper, message.mentions.users.first().id.replace('!', ''), amount, prv);
       } else {
         message.reply('Sorry, I could not find a user in your tip...').then(message => message.delete(10000));
       }
@@ -213,19 +213,19 @@ function doTip(bot, message, tipper, words, helpmsg) {
   });
 }
 
-function sendRVN(bot, message, tipper, recipient, amount, privacyFlag) {
+function sendSTONE(bot, message, tipper, recipient, amount, privacyFlag) {
   getAddress(recipient.toString(), function(err, address) {
     if (err) {
       message.reply(err.message).then(message => message.delete(10000));
     } else {
-          rvn.sendFrom(tipper, address, Number(amount), 1, null, null, function(err, txId) {
+          stone.sendFrom(tipper, address, Number(amount), 1, null, null, function(err, txId) {
               if (err) {
                 message.reply(err.message).then(message => message.delete(10000));
               } else {
                 if (privacyFlag) {
                   let userProfile = message.guild.members.find('id', recipient);
                   userProfile.user.send({ embed: {
-                  description: '**:money_with_wings::moneybag:Ravencoin (RVN) Transaction Completed!:moneybag::money_with_wings:**',
+                  description: '**:money_with_wings::moneybag:Stonecoin (STONE) Transaction Completed!:moneybag::money_with_wings:**',
                   color: 1363892,
                   fields: [
                     {
@@ -256,7 +256,7 @@ function sendRVN(bot, message, tipper, recipient, amount, privacyFlag) {
                   ]
                 } });
                 message.author.send({ embed: {
-                description: '**:money_with_wings::moneybag:Ravencoin (RVN) Transaction Completed!:moneybag::money_with_wings:**',
+                description: '**:money_with_wings::moneybag:Stonecoin (STONE) Transaction Completed!:moneybag::money_with_wings:**',
                 color: 1363892,
                 fields: [
                   {
@@ -288,13 +288,13 @@ function sendRVN(bot, message, tipper, recipient, amount, privacyFlag) {
                 ]
               } });
                   if (
-                    message.content.startsWith('!tiprvn private ')
+                    message.content.startsWith('!tipstone private ')
                   ) {
                     message.delete(1000); //Supposed to delete message
                   }
                 } else {
                   message.channel.send({ embed: {
-                  description: '**:money_with_wings::moneybag:Ravencoin (RVN) Transaction Completed!:moneybag::money_with_wings:**',
+                  description: '**:money_with_wings::moneybag:Stonecoin (STONE) Transaction Completed!:moneybag::money_with_wings:**',
                   color: 1363892,
                   fields: [
                     {
@@ -332,13 +332,13 @@ function sendRVN(bot, message, tipper, recipient, amount, privacyFlag) {
 }
 
 function getAddress(userId, cb) {
-  rvn.getAddressesByAccount(userId, function(err, addresses) {
+  stone.getAddressesByAccount(userId, function(err, addresses) {
     if (err) {
       cb(err);
     } else if (addresses.length > 0) {
       cb(null, addresses[0]);
     } else {
-      rvn.getNewAddress(userId, function(err, address) {
+      stone.getNewAddress(userId, function(err, address) {
         if (err) {
           cb(err);
         } else {
@@ -364,16 +364,16 @@ function isSpam(msg) {
 
 function getValidatedAmount(amount) {
   amount = amount.trim();
-  if (amount.toLowerCase().endsWith('rvn')) {
+  if (amount.toLowerCase().endsWith('stone')) {
     amount = amount.substring(0, amount.length - 3);
   }
   return amount.match(/^[0-9]+(\.[0-9]+)?$/) ? amount : null;
 }
 
 function txLink(txId) {
-  return 'https://ravencoin.network/tx/' + txId;
+  return 'https://stone.freakhouse.dev/tx/' + txId;
 }
 
 function addyLink(address) {
-  return 'https://ravencoin.network/address/' + address;
+  return 'https://stone.freakhouse.dev/address/' + address;
 }
