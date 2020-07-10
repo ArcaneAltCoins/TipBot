@@ -4,7 +4,7 @@
 const Discord = require('discord.js');
 let moment = require('moment-timezone');
 // Load config!
-let config = require('../config');
+let config = require('config');
 let logChannel = config.get('moderation').logchannel;
 let pm2Name = config.get('moderation').pm2Name;
 config = config.get('bot');
