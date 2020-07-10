@@ -1,6 +1,6 @@
 'use strict';
 let config = require('config');
-let ravenFee = config.get('stone').paytxfee;
+let stoneFee = config.get('stone').paytxfee;
 let prefix = config.get('bot').prefix;
 exports.commands = ['tiphelp'];
 exports.tiphelp = {
