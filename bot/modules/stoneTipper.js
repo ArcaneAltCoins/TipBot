@@ -1,6 +1,7 @@
 'use strict';
 
 const bitcoin = require('bitcoin');
+const Discord = require('discord.js');
 
 let Regex = require('regex'),
   config = require('config'),
