@@ -77,7 +77,7 @@ bot.on('ready', function() {
         'tiphelp in Discord for a commands list.'
     );
   bot.user.setActivity(config.prefix + 'Intialized!');
-  var text = ['tipstone', 'tiphelp'];
+  var text = ['stone', 'help'];
   var counter = 0;
   setInterval(change, 10000);
 
