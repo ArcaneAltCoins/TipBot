@@ -11,8 +11,8 @@ let paytxfee = config.get('stone').paytxfee;
 const stone = new bitcoin.Client(walletConfig);
 const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
-exports.commands = ['tipstone'];
-exports.tipstone = {
+exports.commands = ['stone'];
+exports.stone = {
   usage: '<subcommand>',
   description:
     '__**Stonecoin (STONE) Tipper**__\nTransaction Fees: **' + paytxfee + '**\n    **!stone** : Displays This Message\n    **!stone balance** : get your balance\n    **!stone deposit** : get address for your deposits\n    **!stone withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n    **!stone <@user> <amount>** :mention a user with @ and then the amount to tip them\n    **!stone private <user> <amount>** : put private before Mentioning a user to tip them privately.\n\n    has a default txfee of ' + paytxfee,
