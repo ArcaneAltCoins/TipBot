@@ -17,13 +17,17 @@ exports.help = {
       '  **' + prefix + '<CoinSymbol> withdraw <ADDRESS> <AMOUNT>** : withdraw coins to specified address\n' +
       '  **' + prefix + '<CoinSymbol> <@user> <amount>** :mention a user with @ and then the amount to tip them\n' +
       '  **' + prefix + '<CoinSymbol> private <user> <amount>** : put private before Mentioning a user to tip them privately\n' +
+      '  **' + prefix + '<CoinSymbol> supply** : current supply of the coin, if available.\n' +
+      '  **' + prefix + '<CoinSymbol> block** : current block height of the coin, if available.\n' +
       '**<> : Replace carrot <> symbole with appropriate value.**\n' +
       '__**Examples**__\n' +
       '  **' + prefix + 'stone @FreakHouse 10**\n' +
       '  **' + prefix + 'stone withdraw STONEaddressHERE 10**\n' +
       '  **' + prefix + 'stone private @FreakHouse 10**\n' +
       '  **' + prefix + 'stone balance**\n' +
-      '  **' + prefix + 'stone deposit**\n'
+      '  **' + prefix + 'stone deposit**\n' +
+      '  **' + prefix + 'stone supply**\n' +
+      '  **' + prefix + 'stone block**\n'
     );
   }
 };
