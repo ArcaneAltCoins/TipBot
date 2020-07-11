@@ -8,6 +8,7 @@ let Regex = require('regex'),
 let walletConfig = config.get('stone').config;
 let paytxfee = config.get('stone').paytxfee;
 const stone = new bitcoin.Client(walletConfig);
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
 
 exports.commands = ['tipstone'];
 exports.tipstone = {
