@@ -25,11 +25,11 @@ exports.help = {
       '__**Examples**__\n' +
       '  **' + prefix + 'stone @FreakHouse 10**\n' +
       '  **' + prefix + 'stone withdraw STONEaddressHERE 10**\n' +
-      '  **' + prefix + 'stone private @FreakHouse 10**\n' +
+      '  **' + prefix + 'aevo private @FreakHouse 10**\n' +
       '  **' + prefix + 'stone balance**\n' +
-      '  **' + prefix + 'stone deposit**\n' +
+      '  **' + prefix + 'aevo deposit**\n' +
       '  **' + prefix + 'stone supply**\n' +
-      '  **' + prefix + 'stone block**\n'
+      '  **' + prefix + 'aevo block**\n'
     );
   }
 };
