@@ -207,7 +207,7 @@ function checkMessageForCommand(msg, isEdit) {
           setTimeout(() => {
           // Removes the user from the set after a minute
           talkedRecently.delete(msg.author.id);
-        }, 15000);
+        }, 5000);
     }
       
   } else {
