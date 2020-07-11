@@ -8,7 +8,7 @@ let config = require('config');
 let logChannel = config.get('moderation').logchannel;
 let pm2Name = config.get('moderation').pm2Name;
 config = config.get('bot');
-
+const talkedRecently = new Set();
 var aliases;
 // check if any aliases are defined
 try {
@@ -77,7 +77,7 @@ bot.on('ready', function() {
         'tiphelp in Discord for a commands list.'
     );
   bot.user.setActivity(config.prefix + 'Intialized!');
-  var text = ['stone', 'help'];
+  var text = ['stone', 'help', 'aevo'];
   var counter = 0;
   setInterval(change, 10000);
 
@@ -131,6 +131,9 @@ bot.on('error', function(error) {
 function checkMessageForCommand(msg, isEdit) {
   //check if message is a command
   if (msg.author.id != bot.user.id && msg.content.startsWith(config.prefix)) {
+    if (talkedRecently.has(msg.author.id)) {
+            msg.channel.send("Cooldown on all commands. Please wait 5 seconds before trying again. - " + msg.author);
+    } else {
     //check if user is Online
     if (
       !msg.author.presence.status ||
@@ -200,6 +203,13 @@ function checkMessageForCommand(msg, isEdit) {
           .send('[' + time + ' PST][' + pm2Name + '] ' + msgTxt + linebreak);
       }
     }
+      talkedRecently.add(msg.author.id);
+          setTimeout(() => {
+          // Removes the user from the set after a minute
+          talkedRecently.delete(msg.author.id);
+        }, 15000);
+    }
+      
   } else {
     //message isn't a command or is from us
     //drop our own messages to prevent feedback loops
