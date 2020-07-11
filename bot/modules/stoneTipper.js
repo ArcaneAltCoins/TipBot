@@ -367,6 +367,18 @@ function getSupply(bot, msg){
   })
 }
 
+function getDataFromAPI(url, sync, callback){
+  let xmlHttp = new XMLHttpRequest();
+  
+  xmlHttp.onreadystatechange = function() {
+    if (xmlHttp.readyState === 4 && xmlHttp.status === 200) {
+      callback(xmlHttp.responseText);
+    }
+  };
+  xmlHttp.open("GET", url, sync);
+  xmlHttp.send(null);
+}
+
 function sendEmbedMessages(msg, description, color, fields) {
   let embed = new Discord.RichEmbed()
     .setTitle("StoneCoin")
