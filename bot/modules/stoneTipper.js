@@ -387,7 +387,7 @@ function sendEmbedMessages(msg, description, color, fields) {
     .setAuthor(msg.client.user.username, msg.client.user.avatarURL)
     .setColor(color)
     .setDescription(description)
-    .setFooter("© Stone Coin", msg.client.user.avatarURL)
+    .setFooter("© Stone Coin", "https://stone.freakhouse.dev/images/logo.png")
     .setTimestamp()
     .setURL("https://stone.freakhouse.dev");
   fields.forEach(function(f){
