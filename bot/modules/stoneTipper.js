@@ -39,6 +39,12 @@ exports.tipstone = {
       case 'withdraw':
         privateorSpamChannel(msg, channelwarning, doWithdraw, [tipper, words, helpmsg]);
         break;
+      case 'block':
+        getBlock(bot, msg);
+        break;
+      case 'supply':
+        getSupply(bot, msg);
+        break;
       default:
         doTip(bot, msg, tipper, words, helpmsg);
     }
@@ -329,6 +335,51 @@ function sendSTONE(bot, message, tipper, recipient, amount, privacyFlag) {
             });
     }
   });
+}
+
+function getBlock(bot, msg){
+ getDataFromAPI("https://stone.freakhouse.dev/api/getblockcount", true, function(result){
+   if (result !== "undefined") {
+      if (result) {
+        sendEmbedMessages(msg, "", 0x00AE86, [{
+          name: "STONE current block",
+          value: "Block height: **" + result + "**"
+        }])
+      } else {
+        msg.reply("No block height found. Notify @FreakHouse of a problem, please.")
+      }
+   }
+ })
+}
+
+function getSupply(bot, msg){
+  getDataFromAPI("https://stone.freakhouse.dev/ext/getmoneysupply", true, function(result){
+    if (result !== "undefined") {
+      if (result) {
+        sendEmbedMessages(msg, "", 0xF55555, [{
+          name: "STONE current supply",
+          value: "Supply: **" + result + "**"
+        }])
+      } else {
+        msg.reply("No supply found. Notify @FreakHouse of a problem, please.")
+      }
+   }
+  })
+}
+
+function sendEmbedMessages(msg, description, color, fields) {
+  let embed = new Discord.RichEmbed()
+    .setTitle("StoneCoin")
+    .setAuthor(msg.client.user.username, msg.client.user.avatarURL)
+    .setColor(color)
+    .setDescription(description)
+    .setFooter("© Stone Coin", msg.client.user.avatarURL)
+    .setTimestamp()
+    .setURL("https://stone.freakhouse.dev");
+  fields.forEach(function(f){
+    embed = embed.addField(f.name, f.value)
+  });
+  msg.channel.send(embed)
 }
 
 function getAddress(userId, cb) {
