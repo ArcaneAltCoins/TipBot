@@ -1,5 +1,8 @@
 {
-"stone":"stone",
+"tipstone":"stone",
+"stonetip":"stone",
+"tipaevo":"aevo",
+"aevotip":"aevo",
 "tip":"help",
-"tip help":"tiphelp"
+"tip help":"help"
 }
