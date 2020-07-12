@@ -340,7 +340,7 @@ function sendAEVO(bot, message, tipper, recipient, amount, privacyFlag) {
 }
 
 function getBlock(bot, msg){
- getDataFromAPI("https://explorer.aevocoin.netv/api/getblockcount", true, function(result){
+ getDataFromAPI("https://explorer.aevocoin.net/api/getblockcount", true, function(result){
    if (result !== "undefined") {
       if (result) {
         sendEmbedMessages(msg, "", 0x00AE86, [{
@@ -355,7 +355,7 @@ function getBlock(bot, msg){
 }
 
 function getSupply(bot, msg){
-  getDataFromAPI("https://explorer.aevocoin.netv/ext/getmoneysupply", true, function(result){
+  getDataFromAPI("https://explorer.aevocoin.net/ext/getmoneysupply", true, function(result){
     if (result !== "undefined") {
       if (result) {
         sendEmbedMessages(msg, "", 0xF55555, [{
